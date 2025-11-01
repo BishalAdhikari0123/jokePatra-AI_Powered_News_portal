@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Article } from '@/lib/types';
+import { ArticleDialog } from '@/components/ArticleDialog';
+import { DeleteDialog } from '@/components/DeleteDialog';
 import {
   Card,
   CardContent,
@@ -23,19 +25,9 @@ import {
   Calendar,
   Tag,
   Lock,
+  Eye,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 
 export default function AdminPage() {
   const router = useRouter();
@@ -52,6 +44,14 @@ export default function AdminPage() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loadingArticles, setLoadingArticles] = useState(false);
   const [token, setToken] = useState('');
+  
+  // Article dialog state
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [articleDialogOpen, setArticleDialogOpen] = useState(false);
+  
+  // Delete dialog state
+  const [articleToDelete, setArticleToDelete] = useState<Article | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     const savedToken = localStorage.getItem('adminToken');
@@ -159,10 +159,17 @@ export default function AdminPage() {
 
       if (data.success) {
         fetchArticles(token);
+        setDeleteDialogOpen(false);
+        setArticleToDelete(null);
       }
     } catch (err) {
       console.error('Failed to delete article');
     }
+  };
+
+  const handleDeleteClick = (article: Article) => {
+    setArticleToDelete(article);
+    setDeleteDialogOpen(true);
   };
 
   const handleTogglePublish = async (id: string, currentlyPublished: boolean) => {
@@ -185,6 +192,18 @@ export default function AdminPage() {
     } catch (err) {
       console.error('Failed to toggle publish status');
     }
+  };
+
+  const handleViewArticle = (article: Article) => {
+    setSelectedArticle(article);
+    setArticleDialogOpen(true);
+  };
+
+  const handleArticleSaved = (updatedArticle: Article) => {
+    setArticles(
+      articles.map((a) => (a.id === updatedArticle.id ? updatedArticle : a))
+    );
+    fetchArticles(token);
   };
 
   if (!isLoggedIn) {
@@ -406,6 +425,14 @@ export default function AdminPage() {
                     </div>
                     <div className="flex gap-2">
                       <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleViewArticle(article)}
+                      >
+                        <Eye className="w-4 h-4 mr-1" />
+                        View/Edit
+                      </Button>
+                      <Button
                         variant={article.published_at ? "outline" : "default"}
                         size="sm"
                         onClick={() => handleTogglePublish(article.id, !!article.published_at)}
@@ -413,31 +440,13 @@ export default function AdminPage() {
                       >
                         {article.published_at ? "Unpublish" : "Publish"}
                       </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="destructive" size="sm">
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Article?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. The article will be
-                              permanently deleted.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDelete(article.id)}
-                              className="bg-red-600 hover:bg-red-700"
-                            >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      <Button 
+                        variant="destructive" 
+                        size="sm"
+                        onClick={() => handleDeleteClick(article)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -446,6 +455,23 @@ export default function AdminPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Article View/Edit Dialog */}
+      <ArticleDialog
+        article={selectedArticle}
+        open={articleDialogOpen}
+        onOpenChange={setArticleDialogOpen}
+        onSave={handleArticleSaved}
+        token={token}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <DeleteDialog
+        article={articleToDelete}
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={() => articleToDelete && handleDelete(articleToDelete.id)}
+      />
     </div>
   );
 }
