@@ -11,6 +11,7 @@ export interface Article {
   source?: string;
   prompt_used?: string;
   author_id?: string;
+  featured_image?: string;
   created_at: string;
   updated_at: string;
 }
@@ -26,6 +27,7 @@ export interface User {
 export interface GenerateArticleRequest {
   prompt: string;
   publish?: boolean;
+  featured_image?: string;
 }
 
 export interface LoginRequest {

@@ -19,7 +19,7 @@ export async function PATCH(
     }
 
     const body = await request.json();
-    const { title, slug, summary, content, tags, language } = body;
+    const { title, slug, summary, content, tags, language, featured_image } = body;
 
     if (!title || !slug || !content) {
       return NextResponse.json<ApiResponse>(
@@ -37,6 +37,7 @@ export async function PATCH(
         content,
         tags: tags || [],
         language: language || 'en',
+        featured_image,
         updated_at: new Date().toISOString(),
       })
       .eq('id', params.id)

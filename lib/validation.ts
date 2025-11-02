@@ -3,6 +3,7 @@ import Joi from 'joi';
 export const generatePromptSchema = Joi.object({
   prompt: Joi.string().min(10).max(2000).required(),
   publish: Joi.boolean().default(false),
+  featured_image: Joi.string().uri().optional().allow('', null),
 });
 
 export const loginSchema = Joi.object({

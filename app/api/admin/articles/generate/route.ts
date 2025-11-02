@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { prompt, publish } = value!;
+    const { prompt, publish, featured_image } = value!;
 
     const enhancedPrompt = `You are "jokePatra" — Nepal's most sarcastic, witty daily news writer.
 
@@ -76,6 +76,7 @@ Tone: sarcastic, humorous, clever, satirical but not hateful or defamatory.`;
         published_at: shouldPublish ? new Date().toISOString() : null,
         source: 'Gemini 1.5 Flash',
         prompt_used: prompt,
+        featured_image: featured_image || null,
         author_id: decoded.userId,
       })
       .select()
