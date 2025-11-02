@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Article } from '@/lib/types';
 import { ArticleDialog } from '@/components/ArticleDialog';
 import { DeleteDialog } from '@/components/DeleteDialog';
+import { ImageUpload } from '@/components/ImageUpload';
 import {
   Card,
   CardContent,
@@ -311,28 +312,14 @@ export default function AdminPage() {
                   {prompt.length} / 2000 characters
                 </p>
               </div>
-              <div>
-                <Label htmlFor="featured_image">Featured Image URL (Optional)</Label>
-                <Input
-                  id="featured_image"
-                  type="url"
-                  placeholder="https://example.com/image.jpg"
-                  value={featuredImageUrl}
-                  onChange={(e) => setFeaturedImageUrl(e.target.value)}
-                />
-                {featuredImageUrl && (
-                  <div className="mt-2 relative w-full h-32 rounded-lg overflow-hidden border">
-                    <img
-                      src={featuredImageUrl}
-                      alt="Preview"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
+              
+              {/* Image Upload Component */}
+              <ImageUpload 
+                value={featuredImageUrl}
+                onChange={setFeaturedImageUrl}
+                onClear={() => setFeaturedImageUrl('')}
+              />
+
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="publish"

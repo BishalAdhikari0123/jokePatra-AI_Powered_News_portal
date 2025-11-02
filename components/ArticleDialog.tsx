@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Article } from '@/lib/types';
+import { ImageUpload } from '@/components/ImageUpload';
 import {
   Dialog,
   DialogContent,
@@ -140,52 +141,39 @@ export function ArticleDialog({
 
           <TabsContent value="content" className="space-y-4 mt-4">
             {/* Featured Image */}
-            <div>
-              <Label htmlFor="featured_image">Featured Image</Label>
-              {isEditing ? (
-                <div className="space-y-2 mt-1">
-                  <Input
-                    id="featured_image"
-                    type="url"
-                    placeholder="https://example.com/image.jpg"
-                    value={editedArticle.featured_image || ''}
-                    onChange={(e) =>
-                      setEditedArticle({
-                        ...editedArticle,
-                        featured_image: e.target.value,
-                      })
-                    }
-                  />
-                  {editedArticle.featured_image && (
-                    <div className="relative w-full h-48 rounded-lg overflow-hidden border">
-                      <img
-                        src={editedArticle.featured_image}
-                        alt="Featured preview"
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect width="100" height="100" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-              ) : editedArticle.featured_image ? (
-                <div className="mt-2 relative w-full h-64 rounded-lg overflow-hidden border">
-                  <img
-                    src={editedArticle.featured_image}
-                    alt={editedArticle.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="mt-2 flex items-center justify-center h-32 bg-gray-100 rounded-lg border-2 border-dashed">
-                  <div className="text-center text-muted-foreground">
-                    <ImageIcon className="w-8 h-8 mx-auto mb-2" />
-                    <p className="text-sm">No featured image</p>
+            {isEditing ? (
+              <ImageUpload 
+                value={editedArticle.featured_image || ''}
+                onChange={(url) => setEditedArticle({
+                  ...editedArticle,
+                  featured_image: url,
+                })}
+                onClear={() => setEditedArticle({
+                  ...editedArticle,
+                  featured_image: '',
+                })}
+              />
+            ) : (
+              <div>
+                <Label>Featured Image</Label>
+                {editedArticle.featured_image ? (
+                  <div className="mt-2 relative w-full h-64 rounded-lg overflow-hidden border">
+                    <img
+                      src={editedArticle.featured_image}
+                      alt={editedArticle.title}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                </div>
-              )}
-            </div>
+                ) : (
+                  <div className="mt-2 flex items-center justify-center h-32 bg-gray-100 rounded-lg border-2 border-dashed">
+                    <div className="text-center text-muted-foreground">
+                      <ImageIcon className="w-8 h-8 mx-auto mb-2" />
+                      <p className="text-sm">No featured image</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             <div>
               <Label htmlFor="title">Title</Label>
