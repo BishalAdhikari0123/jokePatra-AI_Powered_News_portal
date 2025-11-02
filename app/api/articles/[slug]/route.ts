@@ -7,6 +7,18 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
+    // Check if Supabase is properly initialized
+    if (!supabase) {
+      console.error('Supabase is not initialized. Environment variables missing.');
+      return NextResponse.json<ApiResponse>(
+        { 
+          success: false, 
+          error: 'Database configuration error. Please check environment variables.' 
+        },
+        { status: 500 }
+      );
+    }
+
     const { data, error } = await supabase
       .from('articles')
       .select('*')

@@ -8,6 +8,18 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
+    // Check if Supabase Admin is properly initialized
+    if (!supabaseAdmin) {
+      console.error('Supabase Admin is not initialized. Environment variables missing.');
+      return NextResponse.json<ApiResponse>(
+        { 
+          success: false, 
+          error: 'Database configuration error. Please check environment variables in Vercel.' 
+        },
+        { status: 500 }
+      );
+    }
+
     const authHeader = request.headers.get('authorization');
     const token = extractTokenFromHeader(authHeader || '');
 
