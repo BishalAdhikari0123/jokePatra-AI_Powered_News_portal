@@ -7,6 +7,15 @@ async function createAdminUser() {
   const password = process.env.ADMIN_PASSWORD || 'changeme123';
 
   try {
+    // Check if Supabase Admin is initialized
+    if (!supabaseAdmin) {
+      console.error('Error: Supabase Admin is not initialized.');
+      console.error('Please check your environment variables:');
+      console.error('  - NEXT_PUBLIC_SUPABASE_URL');
+      console.error('  - SUPABASE_SERVICE_ROLE_KEY');
+      process.exit(1);
+    }
+
     const hashedPassword = await hashPassword(password);
 
     const { data, error } = await supabaseAdmin
