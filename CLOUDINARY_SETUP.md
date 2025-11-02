@@ -1,5 +1,7 @@
 # 📸 Cloudinary Image Upload Setup
 
+> ⚠️ **SECURITY WARNING**: Never commit your actual Cloudinary credentials to git or share them publicly. Always use environment variables and keep your `.env` file in `.gitignore`.
+
 ## Overview
 jokePatra now uses Cloudinary for image uploads instead of manual URL entry. Users can upload images directly from their device, and they're automatically optimized and stored on Cloudinary.
 
@@ -39,15 +41,15 @@ jokePatra now uses Cloudinary for image uploads instead of manual URL entry. Use
 
 ### Environment Variables (`.env`)
 ```env
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dtfdnvuvm
-CLOUDINARY_API_KEY=451868945211344
-CLOUDINARY_API_SECRET=JYz9qcR1e-oNQL7kh8gArDYPuJY
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 ### Vercel Deployment
 When deploying to Vercel, add these environment variables:
 1. Go to Project Settings → Environment Variables
-2. Add the three Cloudinary variables above
+2. Add the three Cloudinary variables with your actual credentials
 3. Redeploy for changes to take effect
 
 ## How It Works
