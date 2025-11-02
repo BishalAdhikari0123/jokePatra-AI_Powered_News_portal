@@ -11,9 +11,9 @@ https://vercel.com/dashboard → Your Project → Settings → Environment Varia
 
 #### Supabase Configuration (REQUIRED)
 ```
-NEXT_PUBLIC_SUPABASE_URL=https://bvkptubgznyahhtdkipp.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2a3B0dWJnem55YWhodGRraXBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE5OTE5MjAsImV4cCI6MjA3NzU2NzkyMH0.CJHcOkTy9NOxlJ3w96gfko4VMJAx7g0doP3OQdwihFs
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2a3B0dWJnem55YWhodGRraXBwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTk5MTkyMCwiZXhwIjoyMDc3NTY3OTIwfQ.sy2luZhJxDjCRlpz27UQcMWW4pAYPb-HcjHP2uSzYco
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 ```
 
 #### Admin Credentials (REQUIRED)
@@ -24,7 +24,7 @@ ADMIN_PASSWORD=changeme123
 
 #### Gemini API (REQUIRED)
 ```
-GEMINI_API_KEY=AIzaSyA6xar2AKwTdT1hDmwGPr_YVKTp6ojaoYs
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
 #### Cloudinary (REQUIRED for image uploads)
